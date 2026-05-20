@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내 프로필</title>
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+<body>
+
+  <!-- 페이지 로딩 오버레이 -->
+  <div id="page-loader">
+    <div class="loader-ring"></div>
+  </div>
+
+  <!-- 상단 진행 바 -->
+  <div id="scroll-progress"></div>
+
+  <!-- 네비게이션 -->
+  <nav class="nav" id="navbar">
+    <div class="nav-inner">
+      <span class="nav-logo">신준호</span>
+      <ul class="nav-links">
+        <li><a href="#about" class="nav-link">소개</a></li>
+        <li><a href="#skills" class="nav-link">스킬</a></li>
+        <li><a href="#experience" class="nav-link">경력</a></li>
+        <li><a href="#projects" class="nav-link">프로젝트</a></li>
+        <li><a href="#contact" class="nav-link">연락처</a></li>
+      </ul>
+      <div class="nav-right">
+        <span id="nav-username" class="nav-username"></span>
+        <button class="btn-logout" onclick="logout()">로그아웃</button>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <!-- 모바일 메뉴 -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#about" onclick="toggleMenu()">소개</a>
+      <a href="#skills" onclick="toggleMenu()">스킬</a>
+      <a href="#experience" onclick="toggleMenu()">경력</a>
+      <a href="#projects" onclick="toggleMenu()">프로젝트</a>
+      <a href="#contact" onclick="toggleMenu()">연락처</a>
+    </div>
+  </nav>
+
+  <!-- ① 히어로 섹션 -->
+  <section class="hero" id="hero">
+    <canvas id="particle-canvas"></canvas>
+    <div class="hero-content">
+      <p class="hero-label reveal-up">안녕하세요, 저는</p>
+      <h1 class="hero-name reveal-up delay-1">신준호</h1>
+      <div class="hero-typed-wrap reveal-up delay-2">
+        <span id="typed-text" class="hero-typed"></span>
+        <span class="cursor">|</span>
+      </div>
+      <p class="hero-bio reveal-up delay-3">
+        사용자 경험을 최우선으로 생각하는 풀스택 개발자입니다.<br/>
+        Java · Spring Boot · 깔끔한 코드를 추구합니다.
+      </p>
+      <div class="hero-actions reveal-up delay-4">
+        <a href="#projects" class="btn-primary">프로젝트 보기</a>
+        <a href="#contact" class="btn-ghost">연락하기</a>
+      </div>
+    </div>
+    <a href="#about" class="scroll-down">
+      <div class="scroll-down-icon">
+        <div class="scroll-dot"></div>
+      </div>
+      <span>스크롤</span>
+    </a>
+  </section>
+
+  <!-- ② 통계 바 -->
+  <section class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item reveal-up">
+        <span class="stat-number" data-target="3">0</span>
+        <span class="stat-plus">+</span>
+        <p>년 경력</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal-up delay-1">
+        <span class="stat-number" data-target="24">0</span>
+        <span class="stat-plus">+</span>
+        <p>완료 프로젝트</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal-up delay-2">
+        <span class="stat-number" data-target="12">0</span>
+        <span class="stat-plus">+</span>
+        <p>사용 기술</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal-up delay-3">
+        <span class="stat-number" data-target="98">0</span>
+        <span class="stat-plus">%</span>
+        <p>고객 만족도</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 소개 섹션 -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-wrap reveal-left">
+          <div class="about-img-bg"></div>
+          <div class="about-img-card">
+            <div class="profile-avatar">🧑‍💻</div>
+            <div class="profile-badge">
+              <span class="badge-dot"></span>
+              <span>재직 중</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-text reveal-right">
+          <span class="section-tag">About Me</span>
+          <h2 class="section-title">저를 소개합니다</h2>
+          <p>Java와 Spring Boot를 주력으로 하는 풀스택 개발자입니다. 수원대학교 정보보호학과에 다니고 있습니다.</p>
+          <p>복잡한 문제를 단순하게 해결하는 것을 좋아하고, 팀원들과의 협업을 중요하게 생각합니다.</p>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">이름</span>
+              <span class="info-value">신준호</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">직군</span>
+              <span class="info-value">풀스택 개발자</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">이메일</span>
+              <span class="info-value">sinjunho1932@gmail.com</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">위치</span>
+              <span class="info-value">화성시 병점구 안녕북길</span>
+            </div>
+          </div>
+          <a href="#" class="btn-primary" download>이력서 다운로드</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 스킬 섹션 -->
+  <section id="skills" class="section skills-section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">Skills</span>
+        <h2 class="section-title">기술 스택</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category reveal-up">
+          <h3>Backend</h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-info"><span>Java</span><span class="skill-pct">90%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span>Spring Boot</span><span class="skill-pct">85%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span>MySQL</span><span class="skill-pct">75%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span>JPA / Hibernate</span><span class="skill-pct">70%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category reveal-up delay-1">
+          <h3>Frontend</h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <div class="skill-info"><span>HTML / CSS</span><span class="skill-pct">80%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+            </div>
+            <div class="skill-item">
+              <div class="skill-info"><span>JavaScript</span><span class="skill-pct">70%</span></div>
+              <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category reveal-up delay-2">
+          <h3>Tools</h3>
+          <div class="tool-tags">
+            <span class="tool-tag">Git</span>
+            <span class="tool-tag">IntelliJ</span>
+            <span class="tool-tag">Docker</span>
+            <span class="tool-tag">Postman</span>
+            <span class="tool-tag">GitHub Actions</span>
+            <span class="tool-tag">Linux</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 경력 타임라인 -->
+  <section id="experience" class="section experience-section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">Experience</span>
+        <h2 class="section-title">경력 사항</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item reveal-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3>백엔드 개발자</h3>
+              <span class="timeline-period">2023.03 — 현재</span>
+            </div>
+            <p class="timeline-company">🏢 (주)테크스타트</p>
+            <ul class="timeline-desc">
+              <li>Spring Boot 기반 REST API 설계 및 개발</li>
+              <li>기존 레거시 시스템 마이그레이션</li>
+              <li>쿼리 최적화로 응답속도 40% 개선</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>Java</span><span>Spring Boot</span><span>MySQL</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item reveal-right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3>Junior 개발자</h3>
+              <span class="timeline-period">2021.07 — 2023.02</span>
+            </div>
+            <p class="timeline-company">🏢 (주)디지털솔루션</p>
+            <ul class="timeline-desc">
+              <li>웹 서비스 유지보수 및 기능 추가</li>
+              <li>API 연동 및 데이터 처리 모듈 개발</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>Java</span><span>JSP</span><span>Oracle</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-item reveal-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-header">
+              <h3>컴퓨터공학 학사</h3>
+              <span class="timeline-period">2017.03 — 2021.02</span>
+            </div>
+            <p class="timeline-company">🎓 한국대학교</p>
+            <ul class="timeline-desc">
+              <li>소프트웨어 공학 전공</li>
+              <li>졸업논문: 분산 시스템 설계</li>
+            </ul>
+            <div class="timeline-tags">
+              <span>C/C++</span><span>Python</span><span>알고리즘</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑥ 프로젝트 섹션 -->
+  <section id="projects" class="section projects-section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">Projects</span>
+        <h2 class="section-title">주요 프로젝트</h2>
+      </div>
+      <div class="project-filters reveal-up">
+        <button class="filter-btn active" data-filter="all">전체</button>
+        <button class="filter-btn" data-filter="backend">백엔드</button>
+        <button class="filter-btn" data-filter="fullstack">풀스택</button>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card tilt-card reveal-up" data-category="fullstack">
+          <div class="project-card-inner">
+            <div class="project-icon">🌐</div>
+            <h3>포트폴리오 웹사이트</h3>
+            <p>HTML, CSS, JavaScript와 Spring Boot로 만든 개인 포트폴리오 사이트. 로그인/로그아웃 기능 포함.</p>
+            <div class="project-tech">
+              <span>Spring Boot</span><span>HTML</span><span>CSS</span><span>JS</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link-btn">GitHub</a>
+              <a href="#" class="project-link-btn project-link-demo">Demo</a>
+            </div>
+          </div>
+          <div class="project-card-glow"></div>
+        </div>
+        <div class="project-card tilt-card reveal-up delay-1" data-category="backend">
+          <div class="project-card-inner">
+            <div class="project-icon">⚡</div>
+            <h3>Todo REST API</h3>
+            <p>Spring Boot 기반 할 일 관리 REST API. 세션 인증, CRUD, 페이징 구현.</p>
+            <div class="project-tech">
+              <span>Spring Boot</span><span>JPA</span><span>MySQL</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link-btn">GitHub</a>
+            </div>
+          </div>
+          <div class="project-card-glow"></div>
+        </div>
+        <div class="project-card tilt-card reveal-up delay-2" data-category="backend">
+          <div class="project-card-inner">
+            <div class="project-icon">🔔</div>
+            <h3>실시간 알림 서버</h3>
+            <p>Server-Sent Events를 활용한 실시간 알림 시스템. Spring Boot + SSE 구현.</p>
+            <div class="project-tech">
+              <span>Spring Boot</span><span>SSE</span><span>Redis</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link-btn">GitHub</a>
+            </div>
+          </div>
+          <div class="project-card-glow"></div>
+        </div>
+        <div class="project-card tilt-card reveal-up" data-category="fullstack">
+          <div class="project-card-inner">
+            <div class="project-icon">☁️</div>
+            <h3>날씨 대시보드</h3>
+            <p>OpenWeather API를 활용한 날씨 조회 앱. 현재 위치 기반 실시간 날씨 정보 제공.</p>
+            <div class="project-tech">
+              <span>JavaScript</span><span>Fetch API</span><span>CSS Grid</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link-btn">GitHub</a>
+              <a href="#" class="project-link-btn project-link-demo">Demo</a>
+            </div>
+          </div>
+          <div class="project-card-glow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑦ 연락처 -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <div class="section-header reveal-up">
+        <span class="section-tag">Contact</span>
+        <h2 class="section-title">함께 일해요</h2>
+        <p class="section-sub">새로운 기회나 협업 제안을 환영합니다.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal-left">
+          <div class="contact-card">
+            <span class="contact-icon">✉️</span>
+            <div>
+              <p class="contact-label">이메일</p>
+              <a href="mailto:hong@email.com">hong@email.com</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <span class="contact-icon">💻</span>
+            <div>
+              <p class="contact-label">GitHub</p>
+              <a href="https://github.com" target="_blank">github.com/hong</a>
+            </div>
+          </div>
+          <div class="contact-card">
+            <span class="contact-icon">💼</span>
+            <div>
+              <p class="contact-label">LinkedIn</p>
+              <a href="https://linkedin.com" target="_blank">linkedin.com/in/hong</a>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form reveal-right" onsubmit="sendMessage(event)">
+          <div class="form-row">
+            <div class="form-field">
+              <input type="text" id="cf-name" placeholder=" " required />
+              <label for="cf-name">이름</label>
+            </div>
+            <div class="form-field">
+              <input type="email" id="cf-email" placeholder=" " required />
+              <label for="cf-email">이메일</label>
+            </div>
+          </div>
+          <div class="form-field">
+            <input type="text" id="cf-subject" placeholder=" " required />
+            <label for="cf-subject">제목</label>
+          </div>
+          <div class="form-field">
+            <textarea id="cf-message" rows="5" placeholder=" " required></textarea>
+            <label for="cf-message">메시지</label>
+          </div>
+          <button type="submit" class="btn-primary btn-send">
+            <span>보내기</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>© 2025 홍길동 · Designed & Built with ❤️</p>
+  </footer>
+
+  <!-- 맨 위로 버튼 -->
+  <button id="back-to-top" onclick="scrollToTop()" title="맨 위로">↑</button>
+
+  <script src="js/auth-check.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>
