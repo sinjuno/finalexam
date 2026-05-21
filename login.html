@@ -3,288 +3,223 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>로그인</title>
+  <title>신준호 — 포트폴리오</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     :root {
-      --primary: #4f8ef7;
-      --primary-rgb: 79, 142, 247;
-      --bg: #080c14;
-      --bg-card: #111827;
-      --text: #e2e8f0;
-      --text-muted: #64748b;
-      --border: rgba(255,255,255,0.08);
+      --bg:    #030303;
+      --card:  #0C0C0C;
+      --text:  #F0F0EC;
+      --muted: #555;
+      --gold:  #D4AF37;
+      --glt:   #F0D878;
+      --gdk:   #9A7A1A;
+      --gbdr:  rgba(212,175,55,.4);
+      --gdim:  rgba(212,175,55,.1);
+      --ease:  cubic-bezier(.4,0,.2,1);
     }
-
+    html, body { height: 100%; }
     body {
-      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex;
+      align-items: center; justify-content: center;
       overflow: hidden;
     }
 
-    canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
+    /* 노이즈 텍스처 */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px; opacity: .025; pointer-events: none;
     }
 
-    .login-wrap {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 420px;
-      padding: 1.5rem;
-    }
-
-    .login-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .login-logo {
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, #fff 30%, var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.5rem;
-    }
-
-    .login-sub {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-
-    .login-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-      animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .form-field {
-      position: relative;
-      margin-bottom: 1.25rem;
-    }
-
-    .form-field input {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-family: inherit;
-      padding: 1.1rem 1rem 0.5rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .form-field label {
-      position: absolute;
-      left: 1rem;
-      top: 0.85rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      transition: all 0.2s;
+    /* 배경 골드 glow */
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 700px 500px at 15% 85%, rgba(212,175,55,.04) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 400px at 85% 15%, rgba(212,175,55,.03) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .form-field input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+    canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .35; }
+
+    /* 카드 */
+    .card {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 460px; margin: 1.5rem;
+      padding: 3.25rem 3rem;
+      background: linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(145deg, rgba(212,175,55,.7), rgba(212,175,55,.08) 40%, rgba(255,255,255,.04) 60%, rgba(212,175,55,.4)) border-box;
+      border: 1px solid transparent;
+      animation: cardIn .7s var(--ease) both;
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform: translateY(32px) scale(.97); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
     }
 
-    .form-field input:focus + label,
-    .form-field input:not(:placeholder-shown) + label {
-      top: 0.3rem;
-      font-size: 0.72rem;
-      color: var(--primary);
+    /* 상단 골드 라인 */
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--glt), var(--gold), transparent);
     }
 
-    .error-msg {
+    /* 로고 */
+    .logo {
+      font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800;
+      letter-spacing: -2px; line-height: 1;
+      background: linear-gradient(105deg, #aaa 0%, #fff 20%, var(--gold) 38%, #fff 55%, var(--glt) 70%, #fff 85%, #999 100%);
+      background-size: 300% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: metalSweep 5s linear infinite;
+      margin-bottom: .5rem;
+    }
+    @keyframes metalSweep {
+      from { background-position: 200% center; }
+      to   { background-position: 0% center; }
+    }
+
+    .sub { font-size: .82rem; color: var(--muted); font-weight: 300; margin-bottom: 2.75rem; letter-spacing: .02em; }
+
+    /* 에러 */
+    .err {
       display: none;
-      background: rgba(239, 68, 68, 0.08);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      color: #f87171;
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      font-size: 0.875rem;
-      margin-bottom: 1.25rem;
-      text-align: center;
+      background: rgba(239,68,68,.07); border: 1px solid rgba(239,68,68,.2);
+      color: #f87171; padding: .7rem 1rem; font-size: .8rem; margin-bottom: 1.25rem;
     }
-    .error-msg.visible { display: block; }
+    .err.on { display: block; }
 
-    .btn-login {
-      width: 100%;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 0.875rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.35);
-      margin-top: 0.25rem;
+    /* 인풋 */
+    .field { position: relative; margin-bottom: 2rem; }
+    .field input {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 1px solid #222; color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: .95rem;
+      padding: .85rem 0 .5rem; outline: none; transition: border-color .3s;
+    }
+    .field label {
+      position: absolute; left: 0; top: .85rem; font-size: .875rem; color: var(--muted);
+      transition: all .25s var(--ease); pointer-events: none;
+    }
+    .field::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: linear-gradient(90deg, var(--gdk), var(--gold), var(--glt));
+      transition: width .4s var(--ease);
+    }
+    .field:focus-within::after { width: 100%; }
+    .field input:focus + label,
+    .field input:not(:placeholder-shown) + label {
+      top: -.75rem; font-size: .68rem; color: var(--gold); letter-spacing: .12em; text-transform: uppercase;
     }
 
-    .btn-login:hover {
-      background: #3a7ded;
+    /* 버튼 */
+    .btn {
+      width: 100%; border: none; cursor: pointer;
+      background: linear-gradient(135deg, var(--gdk), var(--gold), var(--glt));
+      background-size: 200% auto;
+      color: #000; padding: 1.05rem; margin-top: .5rem;
+      font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700;
+      letter-spacing: .06em;
+      transition: background-position .4s, transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(212,175,55,.22);
+    }
+    .btn:hover:not(.loading) {
+      background-position: right center;
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(var(--primary-rgb), 0.45);
+      box-shadow: 0 10px 40px rgba(212,175,55,.32);
     }
+    .btn.loading { opacity: .6; cursor: not-allowed; }
 
-    .btn-login:active { transform: translateY(0); }
-
-    .btn-login.loading { opacity: 0.7; cursor: not-allowed; }
+    .footer { text-align: center; margin-top: 2rem; font-size: .72rem; color: #2a2a2a; }
   </style>
 </head>
 <body>
 
-  <canvas id="canvas"></canvas>
+  <canvas id="c"></canvas>
 
-  <div class="login-wrap">
-    <div class="login-header">
-      <div class="login-logo">신준호</div>
-      <p class="login-sub">포트폴리오에 오신 것을 환영합니다</p>
-    </div>
-    <div class="login-card">
-      <div class="error-msg" id="error-msg">아이디 또는 비밀번호가 올바르지 않습니다.</div>
-      <form onsubmit="login(event)">
-        <div class="form-field">
-          <input type="text" id="username" placeholder=" " required autocomplete="username" />
-          <label for="username">아이디</label>
-        </div>
-        <div class="form-field">
-          <input type="password" id="password" placeholder=" " required autocomplete="current-password" />
-          <label for="password">비밀번호</label>
-        </div>
-        <button type="submit" class="btn-login" id="login-btn">로그인</button>
-      </form>
-    </div>
+  <div class="card">
+    <div class="logo">신준호</div>
+    <p class="sub">풀스택 개발자 포트폴리오에 오신 것을 환영합니다.</p>
+
+    <div class="err" id="err">아이디 또는 비밀번호를 확인해주세요.</div>
+
+    <form onsubmit="login(event)">
+      <div class="field">
+        <input type="text" id="uid" placeholder=" " required autocomplete="username"/>
+        <label for="uid">아이디</label>
+      </div>
+      <div class="field">
+        <input type="password" id="pw" placeholder=" " required autocomplete="current-password"/>
+        <label for="pw">비밀번호</label>
+      </div>
+      <button type="submit" class="btn" id="btn">로그인</button>
+    </form>
+
+    <p class="footer">© 2025 신준호. All rights reserved.</p>
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:8080';
+    const API = 'http://localhost:8080';
 
-    // 이미 로그인된 경우 바로 프로필로
-    (async function () {
-      try {
-        const res = await fetch(`${API_BASE}/api/me`, { credentials: 'include' });
-        if (res.ok) window.location.href = 'profile.html';
-      } catch (e) {}
-    })();
-
-    async function login(e) {
-      e.preventDefault();
-      const btn = document.getElementById('login-btn');
-      const errorEl = document.getElementById('error-msg');
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-
-      btn.classList.add('loading');
-      btn.textContent = '로그인 중...';
-      errorEl.classList.remove('visible');
-
-      try {
-        const res = await fetch(`${API_BASE}/api/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ username, password })
+    /* 파티클 (골드) */
+    (function(){
+      const c = document.getElementById('c');
+      const ctx = c.getContext('2d');
+      let pts=[], id;
+      const resize = () => { c.width=innerWidth; c.height=innerHeight; };
+      const mkP = () => ({
+        x:Math.random()*c.width, y:Math.random()*c.height,
+        r:Math.random()*1.5+.3,
+        dx:(Math.random()-.5)*.3, dy:(Math.random()-.5)*.3,
+        a:Math.random()*.35+.05
+      });
+      const init = () => { resize(); pts=Array.from({length:70},mkP); };
+      const draw = () => {
+        ctx.clearRect(0,0,c.width,c.height);
+        pts.forEach(p=>{
+          p.x+=p.dx; p.y+=p.dy;
+          if(p.x<0||p.x>c.width) p.dx*=-1;
+          if(p.y<0||p.y>c.height) p.dy*=-1;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+          ctx.fillStyle=`rgba(212,175,55,${p.a})`; ctx.fill();
         });
-
-        if (res.ok) {
-          btn.textContent = '✓ 이동 중...';
-          window.location.href = 'profile.html';
-        } else {
-          errorEl.classList.add('visible');
-          btn.textContent = '로그인';
-          btn.classList.remove('loading');
+        for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
+          const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+          const d=Math.sqrt(dx*dx+dy*dy);
+          if(d<100){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
+            ctx.strokeStyle=`rgba(212,175,55,${.04*(1-d/100)})`; ctx.lineWidth=.6; ctx.stroke(); }
         }
-      } catch (e) {
-        errorEl.classList.add('visible');
-        btn.textContent = '로그인';
-        btn.classList.remove('loading');
-      }
-    }
-
-    // 파티클 배경
-    (function () {
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
-      let particles = [], animId;
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      function mkParticle() {
-        return {
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          r: Math.random() * 1.5 + 0.3,
-          dx: (Math.random() - 0.5) * 0.3,
-          dy: (Math.random() - 0.5) * 0.3,
-          a: Math.random() * 0.4 + 0.1
-        };
-      }
-
-      function init() { resize(); particles = Array.from({ length: 70 }, mkParticle); }
-
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-          p.x += p.dx; p.y += p.dy;
-          if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(79,142,247,${p.a})`;
-          ctx.fill();
-        });
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const d = Math.sqrt(dx*dx + dy*dy);
-            if (d < 100) {
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(79,142,247,${0.05*(1-d/100)})`;
-              ctx.lineWidth = 0.7;
-              ctx.stroke();
-            }
-          }
-        }
-        animId = requestAnimationFrame(draw);
-      }
-
+        id=requestAnimationFrame(draw);
+      };
       init(); draw();
-      window.addEventListener('resize', () => { cancelAnimationFrame(animId); init(); draw(); });
+      window.addEventListener('resize',()=>{ cancelAnimationFrame(id); init(); draw(); });
     })();
+
+    /* 이미 로그인 */
+    (async()=>{
+      try { const r=await fetch(`${API}/api/me`,{credentials:'include'}); if(r.ok) location.href='profile.html'; } catch(e){}
+    })();
+
+    async function login(e){
+      e.preventDefault();
+      const btn=document.getElementById('btn');
+      const err=document.getElementById('err');
+      btn.classList.add('loading'); btn.textContent='확인 중...'; err.classList.remove('on');
+      try {
+        const r=await fetch(`${API}/api/login`,{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          credentials:'include', body:JSON.stringify({username:uid.value,password:pw.value})
+        });
+        if(r.ok){ btn.textContent='이동 중...'; location.href='profile.html'; }
+        else { err.classList.add('on'); btn.textContent='로그인'; btn.classList.remove('loading'); }
+      } catch(e){ err.classList.add('on'); btn.textContent='로그인'; btn.classList.remove('loading'); }
+    }
   </script>
 </body>
 </html>
